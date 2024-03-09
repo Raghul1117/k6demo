@@ -1,26 +1,17 @@
-	stages:
+stages:
   - build
-  - deploy
-  - loadtest-local
-
-image:
-  name: ubuntu:latest
+  - test
 
 build:
   stage: build
+  services:
+    - docker:dind
   script:
-    - echo "building my application in ubuntu container..."
-
-deploy:
-  stage: deploy
-  script:
-    - echo "deploying my application in ubuntu container..."
-
-loadtest-local:
-  image:
-    name: grafana/k6:latest
-    entrypoint: ['']
-  stage: loadtest-local
-  script:
-    - echo "executing local k6 in k6 container.."
-    - k6 run ./k6demo/http_get.js
+      - apt-get update
+      - apt-get install -y docker.io
+      - sudo docker build -t my-k6-test .
+    
+test_job:
+  stage: test
+  script: 
+    - sudo docker run my-k6-test
