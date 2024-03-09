@@ -22,5 +22,5 @@ loadtest-local:
     entrypoint: ['']
   stage: loadtest-local
   script:
-    - echo "executing local k6 in k6 container..."
+    - echo "executing local k6 in k6 container.."
     - k6 run ./k6demo/http_get.js
